@@ -45,4 +45,10 @@ public class TodoController {
         TodoResponseDto todo = todoService.getTodoById(id);
         return ResponseEntity.ok(todo);
     }
+
+    @PatchMapping("/{id}/toggle")
+    public ResponseEntity<TodoResponseDto> toggleTodoCompleted(@PathVariable Long id) {
+        TodoResponseDto updatedTodo = todoService.toggleTodoCompleted(id);
+        return ResponseEntity.ok(updatedTodo);
+    }
 }

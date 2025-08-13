@@ -40,5 +40,11 @@ public class TodoService {
         return TodoResponseDto.fromEntity(todo);
     }
 
+    public TodoResponseDto toggleTodoCompleted(Long id) {
+        Todo todo = todoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("할 일을 찾을 수 없습니다"));
 
+        todo.setCompleted(!todo.getCompleted());
+        Todo updatedTodo = todoRepository.save(todo);
+        return TodoResponseDto.fromEntity(updatedTodo);
+    }
 }
