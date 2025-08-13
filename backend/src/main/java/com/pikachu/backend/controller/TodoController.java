@@ -25,15 +25,24 @@ public class TodoController {
 
     @GetMapping
     public ResponseEntity<List<TodoResponseDto>> getAllTodos(
-            @RequestParam(required = false) Boolean completed
+            @RequestParam(required = false) Boolean completed,
+            @RequestParam(required = false) String search
     ) {
         List<TodoResponseDto> todos;
 
-        if (completed != null) {
+        if (search != null && !search.trim().isEmpty()) {
+            todos = todoService.searchTodosByTitle(search);
+        } else if (completed != null) {
             todos = todoService.getTodosByCompleted(completed);
         } else {
             todos = todoService.getAllTodos();
         }
         return ResponseEntity.ok(todos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable Long id) {
+        TodoResponseDto todo = todoService.getTodoById(id);
+        return ResponseEntity.ok(todo);
     }
 }

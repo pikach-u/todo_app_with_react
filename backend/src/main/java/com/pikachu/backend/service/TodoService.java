@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,4 +30,15 @@ public class TodoService {
     public List<TodoResponseDto> getTodosByCompleted(Boolean completed) {
         return todoRepository.findByCompletedOrderByCreatedAtDesc(completed).stream().map(TodoResponseDto::fromEntity).toList();
     }
+
+    public List<TodoResponseDto> searchTodosByTitle(String title) {
+        return todoRepository.findByTitleContainingIgnoreCase(title).stream().map(TodoResponseDto::fromEntity).toList();
+    }
+
+    public TodoResponseDto getTodoById(Long id) {
+        Todo todo = todoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("할 일을 찾을 수 없습니다."));
+        return TodoResponseDto.fromEntity(todo);
+    }
+
+
 }

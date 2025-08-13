@@ -11,7 +11,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findAllByOrderByCreatedAtDesc();
     List<Todo> findByCompletedOrderByCreatedAtDesc(Boolean completed);
 
-    @Query("SELECT t FROM todo t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%'))")
+    @Query("SELECT t FROM Todo t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%')) ORDER BY t.createdAt DESC")
     List<Todo> findByTitleContainingIgnoreCase(@Param("title") String title);
 
 }
