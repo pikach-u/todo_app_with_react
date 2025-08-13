@@ -2,6 +2,7 @@ package com.pikachu.backend.service;
 
 import com.pikachu.backend.dto.TodoDto;
 import com.pikachu.backend.dto.TodoResponseDto;
+import com.pikachu.backend.dto.TodoUpdateDto;
 import com.pikachu.backend.model.Todo;
 import com.pikachu.backend.repository.TodoRepository;
 import jakarta.transaction.Transactional;
@@ -38,6 +39,24 @@ public class TodoService {
     public TodoResponseDto getTodoById(Long id) {
         Todo todo = todoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("할 일을 찾을 수 없습니다."));
         return TodoResponseDto.fromEntity(todo);
+    }
+
+    public TodoResponseDto updateTodo(Long id, TodoUpdateDto dto){
+        Todo todo = todoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("할 일을 찾을 수 없습니다."));
+        if(dto.getTitle() != null && !dto.getTitle().trim().isEmpty()){
+            todo.setTitle(dto.getTitle());
+        }
+
+        if(dto.getDescription() != null) {
+            todo.setDescription(dto.getDescription());
+        }
+
+        if(dto.getCompleted() != null) {
+            todo.setCompleted(dto.getCompleted());
+        }
+
+        Todo updatedTodo = todoRepository.save(todo);
+        return TodoResponseDto.fromEntity(updatedTodo);
     }
 
     public TodoResponseDto toggleTodoCompleted(Long id) {

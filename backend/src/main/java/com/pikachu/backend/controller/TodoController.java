@@ -2,6 +2,7 @@ package com.pikachu.backend.controller;
 
 import com.pikachu.backend.dto.TodoDto;
 import com.pikachu.backend.dto.TodoResponseDto;
+import com.pikachu.backend.dto.TodoUpdateDto;
 import com.pikachu.backend.service.TodoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,15 @@ public class TodoController {
     public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable Long id) {
         TodoResponseDto todo = todoService.getTodoById(id);
         return ResponseEntity.ok(todo);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TodoResponseDto> updateTodo(
+            @PathVariable Long id,
+            @Valid @RequestBody TodoUpdateDto dto
+    ) {
+        TodoResponseDto updatedTodo = todoService.updateTodo(id, dto);
+        return ResponseEntity.ok(updatedTodo);
     }
 
     @PatchMapping("/{id}/toggle")
