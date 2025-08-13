@@ -66,4 +66,11 @@ public class TodoService {
         Todo updatedTodo = todoRepository.save(todo);
         return TodoResponseDto.fromEntity(updatedTodo);
     }
+
+    public void deleteTodo(Long id){
+        if(!todoRepository.existsById(id)){
+            throw new NoSuchElementException("할 일을 찾을 수 없습니다.");
+        }
+        todoRepository.deleteById(id);
+    }
 }
