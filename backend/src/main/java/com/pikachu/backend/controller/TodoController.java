@@ -2,6 +2,7 @@ package com.pikachu.backend.controller;
 
 import com.pikachu.backend.dto.TodoDto;
 import com.pikachu.backend.dto.TodoResponseDto;
+import com.pikachu.backend.dto.TodoStatsDto;
 import com.pikachu.backend.dto.TodoUpdateDto;
 import com.pikachu.backend.service.TodoService;
 import jakarta.validation.Valid;
@@ -87,5 +88,11 @@ public class TodoController {
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
         todoService.deleteTodo(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<TodoStatsDto> getStats() {
+        TodoStatsDto stats = todoService.getStats();
+        return ResponseEntity.ok(stats);
     }
 }

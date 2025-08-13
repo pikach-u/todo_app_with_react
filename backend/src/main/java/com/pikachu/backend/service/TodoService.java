@@ -2,6 +2,7 @@ package com.pikachu.backend.service;
 
 import com.pikachu.backend.dto.TodoDto;
 import com.pikachu.backend.dto.TodoResponseDto;
+import com.pikachu.backend.dto.TodoStatsDto;
 import com.pikachu.backend.dto.TodoUpdateDto;
 import com.pikachu.backend.model.Todo;
 import com.pikachu.backend.repository.TodoRepository;
@@ -43,17 +44,17 @@ public class TodoService {
         return TodoResponseDto.fromEntity(todo);
     }
 
-    public TodoResponseDto updateTodo(Long id, TodoUpdateDto dto){
+    public TodoResponseDto updateTodo(Long id, TodoUpdateDto dto) {
         Todo todo = todoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("할 일을 찾을 수 없습니다."));
-        if(dto.getTitle() != null && !dto.getTitle().trim().isEmpty()){
+        if (dto.getTitle() != null && !dto.getTitle().trim().isEmpty()) {
             todo.setTitle(dto.getTitle());
         }
 
-        if(dto.getDescription() != null) {
+        if (dto.getDescription() != null) {
             todo.setDescription(dto.getDescription());
         }
 
-        if(dto.getCompleted() != null) {
+        if (dto.getCompleted() != null) {
             todo.setCompleted(dto.getCompleted());
         }
 
@@ -61,7 +62,7 @@ public class TodoService {
         return TodoResponseDto.fromEntity(updatedTodo);
     }
 
-    public Page<TodoResponseDto> getAllTodos(Pageable pageable){
+    public Page<TodoResponseDto> getAllTodos(Pageable pageable) {
         return todoRepository.findAll(pageable).map(TodoResponseDto::fromEntity);
     }
 
@@ -73,10 +74,18 @@ public class TodoService {
         return TodoResponseDto.fromEntity(updatedTodo);
     }
 
-    public void deleteTodo(Long id){
-        if(!todoRepository.existsById(id)){
+    public void deleteTodo(Long id) {
+        if (!todoRepository.existsById(id)) {
             throw new NoSuchElementException("할 일을 찾을 수 없습니다.");
         }
         todoRepository.deleteById(id);
+    }
+
+    public TodoStatsDto getStats() {
+        long totalCount = todoRepository.count();
+        long completedCount = todoRepository.countByCompleted(true);
+        long pendingCount = todoRepository.countByCompleted(false);
+
+        return new TodoStatsDto(totalCount, completedCount, pendingCount);
     }
 }
