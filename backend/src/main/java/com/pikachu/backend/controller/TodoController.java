@@ -6,6 +6,10 @@ import com.pikachu.backend.dto.TodoUpdateDto;
 import com.pikachu.backend.service.TodoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +51,23 @@ public class TodoController {
         return ResponseEntity.ok(todo);
     }
 
+    @GetMapping("/page")
+    public ResponseEntity<Page<TodoResponseDto>> getAllTodosPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir
+    ) {
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<TodoResponseDto> todos = todoService.getAllTodos(pageable);
+
+        return ResponseEntity.ok(todos);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<TodoResponseDto> updateTodo(
             @PathVariable Long id,
@@ -63,7 +84,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable Long id){
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
         todoService.deleteTodo(id);
         return ResponseEntity.noContent().build();
     }

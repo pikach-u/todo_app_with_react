@@ -7,6 +7,8 @@ import com.pikachu.backend.model.Todo;
 import com.pikachu.backend.repository.TodoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,6 +59,10 @@ public class TodoService {
 
         Todo updatedTodo = todoRepository.save(todo);
         return TodoResponseDto.fromEntity(updatedTodo);
+    }
+
+    public Page<TodoResponseDto> getAllTodos(Pageable pageable){
+        return todoRepository.findAll(pageable).map(TodoResponseDto::fromEntity);
     }
 
     public TodoResponseDto toggleTodoCompleted(Long id) {
