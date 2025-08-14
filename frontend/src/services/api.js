@@ -87,4 +87,11 @@ export const todoApi = {
     const response = await api.get("/todos/stats");
     return response.data;
   },
+
+  searchTodos: async (searchTerm) => {
+    const response = await api.get("/todos", {
+      params: { search: searchTerm },
+    });
+    return response.data;
+  },
 };
