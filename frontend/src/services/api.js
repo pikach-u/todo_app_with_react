@@ -82,4 +82,9 @@ export const todoApi = {
     const response = await api.delete(`/todos/${id}`);
     return response.data;
   },
+
+  getStats: async () => {
+    const response = await api.get("/todos/stats");
+    return response.data;
+  },
 };

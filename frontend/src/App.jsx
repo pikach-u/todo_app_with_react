@@ -4,7 +4,7 @@ import { todoApi } from "./services/api";
 const App = () => {
   useEffect(() => {
     const test = async () => {
-      const data = await todoApi.deleteTodo(6);
+      const data = await todoApi.getStats();
 
       console.log(data);
     };
