@@ -4,7 +4,7 @@ import TodoList from "./components/TodoList";
 import useTodos from "./hooks/useTodos";
 
 const App = () => {
-  const { todos, stats } = useTodos();
+  const { todos, stats, toggleTodo, updateTodo } = useTodos();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -13,7 +13,7 @@ const App = () => {
         <StatsCard stats={stats} />
 
         <ul className="space-y-3">
-          <TodoList todos={todos} />
+          <TodoList todos={todos} onToggle={toggleTodo} />
         </ul>
       </div>
     </div>

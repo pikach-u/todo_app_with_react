@@ -22,12 +22,32 @@ const useTodos = () => {
     }
   };
 
+  const updateTodo = async (id, todoData) => {
+    try {
+      await todoApi.updateTodo(id, todoData);
+      await loadTodos();
+      await loadStats();
+    } catch (err) {
+      console.error("Error updating todo:", err);
+    }
+  };
+
+  const toggleTodo = async (id) => {
+    try {
+      await todoApi.toggleTodoCompleted(id);
+      await loadTodos();
+      await loadStats();
+    } catch (err) {
+      console.error("Error loading stats: ", err);
+    }
+  };
+
   useEffect(() => {
     loadTodos(); //get요청 실행
     loadStats();
   }, []);
 
-  return { todos, stats };
+  return { todos, stats, toggleTodo, updateTodo };
 };
 
 export default useTodos;
