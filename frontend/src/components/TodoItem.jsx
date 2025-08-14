@@ -53,7 +53,7 @@ const TodoItem = ({ todo, onToggle, onEdit }) => {
         <div className="flex gap-2">
           <button
             className="p-2 text-gray-400 hover:text-blue-600 transition-colors duration-200"
-            onClick={() => onEdit()}
+            onClick={() => onEdit(todo)}
           >
             <Edit size={16} />
           </button>

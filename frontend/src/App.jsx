@@ -7,9 +7,16 @@ import useTodos from "./hooks/useTodos";
 
 const App = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingTodo, setEditingTodo] = useState(null);
+
   const { todos, stats, toggleTodo, updateTodo } = useTodos();
 
-  const handleEditTodo = () => {
+  const handleUpdateTodo = async (todoData) => {
+    await updateTodo(editingTodo.id, todoData);
+  };
+
+  const handleEditTodo = (todo) => {
+    setEditingTodo(todo);
     setIsFormOpen(true);
   };
 
@@ -31,7 +38,12 @@ const App = () => {
           />
         </ul>
 
-        <TodoForm isOpen={isFormOpen} onClose={handleFormClose} />
+        <TodoForm
+          isOpen={isFormOpen}
+          onClose={handleFormClose}
+          editingTodo={editingTodo}
+          onSubmit={handleUpdateTodo}
+        />
       </div>
     </div>
   );
