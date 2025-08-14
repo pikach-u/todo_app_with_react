@@ -94,4 +94,11 @@ export const todoApi = {
     });
     return response.data;
   },
+
+  getTodosByCompleted: async (completed) => {
+    const response = await api.get("/todos", {
+      params: { completed },
+    });
+    return response.data;
+  },
 };

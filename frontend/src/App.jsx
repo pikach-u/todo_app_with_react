@@ -4,7 +4,7 @@ import { todoApi } from "./services/api";
 const App = () => {
   useEffect(() => {
     const test = async () => {
-      const data = await todoApi.searchTodos("테");
+      const data = await todoApi.getTodosByCompleted(true);
 
       console.log(data);
     };
