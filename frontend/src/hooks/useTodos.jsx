@@ -8,17 +8,19 @@ const useTodos = () => {
   const loadTodos = async () => {
     try {
       const data = await todoApi.getAllTodos();
+
       setTodos(data);
     } catch (err) {
-      console.error("Error loading todos: ", err);
+      console.error("Error loading todos:", err);
     }
   };
+
   const loadStats = async () => {
     try {
       const statsData = await todoApi.getStats();
       setStats(statsData);
     } catch (err) {
-      console.error("Error loading stats: ", err);
+      console.error("Error loading stats:", err);
     }
   };
 
@@ -38,16 +40,34 @@ const useTodos = () => {
       await loadTodos();
       await loadStats();
     } catch (err) {
-      console.error("Error loading stats: ", err);
+      console.error("Error toggling todo:", err);
+    }
+  };
+
+  const deleteTodo = async (id) => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+      await todoApi.deleteTodo(id);
+      await loadTodos();
+      await loadStats();
+    } catch (err) {
+      console.error("Error deleting todo:", err);
     }
   };
 
   useEffect(() => {
-    loadTodos(); //get요청 실행
+    loadTodos();
     loadStats();
   }, []);
 
-  return { todos, stats, toggleTodo, updateTodo };
+  return {
+    todos,
+    stats,
+    toggleTodo,
+    updateTodo,
+    deleteTodo,
+  };
 };
 
 export default useTodos;
