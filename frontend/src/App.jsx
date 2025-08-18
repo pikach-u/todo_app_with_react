@@ -5,6 +5,7 @@ import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import useTodos from "./hooks/useTodos";
 import ControlPanel from "./components/ControlPanel";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 const App = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -60,12 +61,15 @@ const App = () => {
           onAddNew={() => setIsFormOpen(true)}
         />
 
+        <LoadingSpinner />
+
         <ul className="space-y-3">
           <TodoList
             todos={todos}
             onToggle={toggleTodo}
             onEdit={handleEditTodo}
             onDelete={deleteTodo}
+            searchTerm={searchTerm}
           />
         </ul>
 
