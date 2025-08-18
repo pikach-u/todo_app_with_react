@@ -24,6 +24,16 @@ const useTodos = () => {
     }
   };
 
+  const createTodo = async (todoData) => {
+    try {
+      await todoApi.createTodo(todoData);
+      await loadTodos();
+      await loadStats();
+    } catch (err) {
+      console.error("Error creating todo:", err);
+    }
+  };
+
   const updateTodo = async (id, todoData) => {
     try {
       await todoApi.updateTodo(id, todoData);
@@ -67,6 +77,7 @@ const useTodos = () => {
     toggleTodo,
     updateTodo,
     deleteTodo,
+    createTodo,
   };
 };
 
