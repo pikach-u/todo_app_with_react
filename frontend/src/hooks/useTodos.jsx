@@ -4,10 +4,22 @@ import { todoApi } from "../services/api";
 const useTodos = () => {
   const [todos, setTodos] = useState([]);
   const [stats, setStats] = useState({ total: 0, completed: 0, pending: 0 });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("all"); // all, completed, pending
 
   const loadTodos = async () => {
     try {
-      const data = await todoApi.getAllTodos();
+      let data;
+
+      if (searchTerm.trim()) {
+        data = await todoApi.searchTodos(searchTerm);
+      } else if (filter === "completed") {
+        data = await todoApi.getTodosByCompleted(true);
+      } else if (filter === "pending") {
+        data = await todoApi.getTodosByCompleted(false);
+      } else {
+        data = await todoApi.getAllTodos();
+      }
 
       setTodos(data);
     } catch (err) {
@@ -71,6 +83,10 @@ const useTodos = () => {
     loadStats();
   }, []);
 
+  useEffect(() => {
+    loadTodos();
+  }, [searchTerm, filter]);
+
   return {
     todos,
     stats,
@@ -78,6 +94,10 @@ const useTodos = () => {
     updateTodo,
     deleteTodo,
     createTodo,
+    searchTerm,
+    setSearchTerm,
+    filter,
+    setFilter,
   };
 };
 

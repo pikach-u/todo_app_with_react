@@ -46,7 +46,7 @@ const StatsCard = ({ stats }) => {
             %
           </div>
           <div>
-            <p className="text-sm text-purple-600">진행률</p>
+            <p className="text-sm text-purple-600">진행중</p>
             <p className="text-2xl font-bold text-purple-800">
               {completionRate}
             </p>

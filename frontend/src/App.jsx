@@ -10,8 +10,22 @@ const App = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingTodo, setEditingTodo] = useState(null);
 
-  const { todos, stats, toggleTodo, createTodo, updateTodo, deleteTodo } =
-    useTodos();
+  const {
+    todos,
+    stats,
+    toggleTodo,
+    createTodo,
+    updateTodo,
+    deleteTodo,
+    searchTerm,
+    setSearchTerm,
+    filter,
+    setFilter,
+  } = useTodos();
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   const handleCreateTodo = async (todoData) => {
     await createTodo(todoData);
@@ -34,11 +48,17 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-red-100 max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <Header />
         <StatsCard stats={stats} />
 
-        <ControlPanel onAddNew={() => setIsFormOpen(true)} />
+        <ControlPanel
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          filter={filter}
+          onFilterChange={setFilter}
+          onAddNew={() => setIsFormOpen(true)}
+        />
 
         <ul className="space-y-3">
           <TodoList
