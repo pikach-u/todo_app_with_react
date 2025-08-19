@@ -6,6 +6,7 @@ import TodoList from "./components/TodoList";
 import useTodos from "./hooks/useTodos";
 import ControlPanel from "./components/ControlPanel";
 import LoadingSpinner from "./components/LoadingSpinner";
+import ErrorMessage from "./components/ErrorMessage";
 
 const App = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -22,6 +23,8 @@ const App = () => {
     setSearchTerm,
     filter,
     setFilter,
+    loading,
+    error,
   } = useTodos();
 
   const handleSearchChange = (e) => {
@@ -61,17 +64,21 @@ const App = () => {
           onAddNew={() => setIsFormOpen(true)}
         />
 
-        <LoadingSpinner />
+        <ErrorMessage error={error} />
 
-        <ul className="space-y-3">
-          <TodoList
-            todos={todos}
-            onToggle={toggleTodo}
-            onEdit={handleEditTodo}
-            onDelete={deleteTodo}
-            searchTerm={searchTerm}
-          />
-        </ul>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <ul className="space-y-3">
+            <TodoList
+              todos={todos}
+              onToggle={toggleTodo}
+              onEdit={handleEditTodo}
+              onDelete={deleteTodo}
+              searchTerm={searchTerm}
+            />
+          </ul>
+        )}
 
         <TodoForm
           isOpen={isFormOpen}
